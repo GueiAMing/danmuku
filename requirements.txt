@@ -1,0 +1,6 @@
+
+line-bot-sdk
+Flask
+Flask-SocketIO 
+pymongo
+eventlet

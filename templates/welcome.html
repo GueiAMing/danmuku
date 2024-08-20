@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Web Page</title>
+    <style>
+        @keyframes moveLeft {
+            from{
+                left:100%;
+            }
+            to{
+                left:-10%;
+            }
+        }
+    
+        .moving-div {
+            position: absolute;
+            right: 0;
+            /* width: 100px; 调整为您需要的宽度 */
+            /* height: 100px; 调整为您需要的高度 */
+            /* background-color: #ffffff; 调整为您需要的颜色 */
+            animation: moveLeft 10s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter your name:</h1>
+    <form action="/greet" method="post">
+        <input type="text" name="name">
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- 歡迎訊息將被插入到這裡 -->
+    {% if welcome_message %}
+    <div style="position: absolute;animation: moveLeft 10s linear infinite;top:150px;">{{ welcome_message }}</div>
+    {% endif %}
+</body>
+</html>
+
+
