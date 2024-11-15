@@ -64,7 +64,7 @@
         Your browser does not support the video tag.      
     </video>
     </div>
-    <div id="videoframe"  popover style="background-color: rgba(80, 82, 85, 0.01);overflow: hidden;width:100%;border:none;"></div>
+    <div id="videoframe"  popover style="background-color: rgba(80, 82, 85, 0.01);overflow: hidden;width:100%;border:none; z-index: 999999;"></div>
 
     <script>
         document.addEventListener("fullscreenchange", function () {
@@ -99,14 +99,15 @@
         var socket = io();
         socket.on('danmaku', function(message){
             var danmakuDiv = document.createElement("div");
-            danmakuDiv.className = "danmaku";
+            danmakuDiv.className = "danmakubackground";
             danmakuDiv.innerText = message;
             var div = document.getElementById('videoframe');
             var divheight = div.offsetHeight;
             var TotalIndex = Math.floor(divheight/60);
             var randomIndex = Math.floor(Math.random()*TotalIndex);
             danmakuDiv.style.top = 60*randomIndex +'px';
-            document.getElementById("videoframe").appendChild(danmakuDiv);
+            document.getElementById("danmu").appendChild(danmakuDiv);
+            console.log("socket1");
             // 设置定时器，在5秒后移除弹幕
             setTimeout(function() {
             danmakuDiv.remove();
@@ -128,6 +129,16 @@
             var randomIndex = Math.floor(Math.random()*TotalIndex);
             danmakuDiv.style.top = 60*randomIndex +'px';
             document.getElementById("videoframe").appendChild(danmakuDiv);
+            console.log("socket2");
+            var danmakuDiv = document.createElement("div");
+            danmakuDiv.className = "danmakubackground";
+            danmakuDiv.innerText = message;
+            var div = document.getElementById('danmu');
+            var divheight = div.offsetHeight;
+            var TotalIndex = Math.floor(divheight/60);
+            var randomIndex = Math.floor(Math.random()*TotalIndex);
+            danmakuDiv.style.top = 60*randomIndex +'px';
+            document.getElementById("danmu").appendChild(danmakuDiv);
             // 设置定时器，在5秒后移除弹幕
             setTimeout(function() {
             danmakuDiv.remove();

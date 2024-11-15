@@ -174,14 +174,15 @@ def linebot():
 
     return "ok"
 
-@app.route('/greet', methods=['POST', 'GET'])
-def greet():
+@app.route('/sendmessage', methods=['POST', 'GET'])
+def send_message():
     if request.method == 'GET':
-        return render_template('welcome.html', welcome_message=None)
+        return render_template('sendmessage.html', welcome_message=None)
     else:
-        name = request.form['name']
-        welcome_message = f"Hello, {name}!"
-        return render_template('welcome.html', welcome_message=welcome_message)
+        message = request.form.get('name')
+        message_be_sent = f"{message},已傳送!"
+        handle_message(message)
+        return render_template('sendmessage.html', message_be_sent=message_be_sent)
     
 @socketio.on('chat_message')
 def handle_message(message):
@@ -208,6 +209,8 @@ def background_task():
                 print(f"sendbysystem:{line}")
                 socketio.emit('danmakubackground', message)
                 time.sleep(3)
+
+
 def fetch_data_from_mongo():
     global USERIDSLIST
     global BLACKUSERIDSLIST
