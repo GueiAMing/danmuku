@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import eventlet
 eventlet.monkey_patch()
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, send_from_directory
 from linebot.v3 import (
     WebhookHandler
 )
@@ -34,7 +34,9 @@ from flask_socketio import SocketIO
 import time
 
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, 
+    static_url_path='/static',
+    static_folder='static')
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -59,6 +61,10 @@ print("黑",BLACKUSERIDSLIST)
 BAD_WORDS = getbadword()
 @app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/video')
+def dan():
     return render_template('dan.html')
 
 @app.route("/callback", methods=['POST', 'GET'])
@@ -201,14 +207,16 @@ def background_task():
     """Example of how to send server generated events to clients."""
     
     while True:
-        
-        with open("static/messages.txt", "r",encoding="utf-8") as f:
-            for line in f.readlines():
-                time.sleep(3)
-                message = line
-                print(f"sendbysystem:{line}")
-                socketio.emit('danmakubackground', message)
-                time.sleep(3)
+        try:
+            with open("/home/ubuntu/danmuku/static/messages.txt", "r",encoding="utf-8") as f:
+                for line in f.readlines():
+                    time.sleep(3)
+                    message = line
+                    print(f"sendbysystem:{line}")
+                    socketio.emit('danmakubackground', message)
+                    time.sleep(3)
+        except:
+            print("讀取失敗")
 
 
 def fetch_data_from_mongo():
@@ -285,8 +293,18 @@ def getWirteinblacklistByhand(nickname):
         except:
             print("資料寫入成功，IN EXCEPT")
 
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
+
+background_thread = None
+
+@socketio.on('connect')
+def handle_connect():
+    global background_thread
+    if background_thread is None:
+        background_thread = socketio.start_background_task(target=background_task)
+        threading.Thread(target=fetch_data_from_mongo, daemon=True).start()
+
 if __name__ == '__main__':
-    # 啟動背景執行緒
-    threading.Thread(target=fetch_data_from_mongo, daemon=True).start()
-    socketio.start_background_task(target=background_task)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000)
