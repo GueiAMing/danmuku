@@ -96,7 +96,7 @@
         div.style.height = screenHeight + 'px';
     </script>
     <script>
-        var socket = io();
+        const socket = io();
         socket.on('danmaku', function(message){
             var danmakuDiv = document.createElement("div");
             danmakuDiv.className = "danmakubackground";
@@ -106,8 +106,17 @@
             var TotalIndex = Math.floor(divheight/60);
             var randomIndex = Math.floor(Math.random()*TotalIndex);
             danmakuDiv.style.top = 60*randomIndex +'px';
-            document.getElementById("danmu").appendChild(danmakuDiv);
+            document.getElementById("videoframe").appendChild(danmakuDiv);
             console.log("socket1");
+            var danmakuDiv = document.createElement("div");
+            danmakuDiv.className = "danmakubackground";
+            danmakuDiv.innerText = message;
+            var div = document.getElementById('danmu');
+            var divheight = div.offsetHeight;
+            var TotalIndex = Math.floor(divheight/60);
+            var randomIndex = Math.floor(Math.random()*TotalIndex);
+            danmakuDiv.style.top = 60*randomIndex +'px';
+            document.getElementById('danmu').appendChild(danmakuDiv);
             // 设置定时器，在5秒后移除弹幕
             setTimeout(function() {
             danmakuDiv.remove();
