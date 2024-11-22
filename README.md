@@ -3,7 +3,10 @@
 透過line official account擷取使用者傳送的訊息，實時在婚禮會場投放的影片上展現彈幕效果 
 
 ## 網站連結
-[彈幕DEMO網站](https://danmuku.mingbuff.online/)
+1.[彈幕DEMO網站](https://danmuku.mingbuff.online/)
+
+2.[youtube影片_自行錄製](https://www.youtube.com/watch?v=qHINz0kgIq0&list=PLu7-a3klKnPgLokg286x33a3RCWRTi3fd&index=1)
+
 
 ![image](https://truth.bahamut.com.tw/s01/202411/bdbe650f775bfd48ef77e7400965d7cd.JPG)
 ## 另外說明
